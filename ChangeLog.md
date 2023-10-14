@@ -1,6 +1,8 @@
 
 # ChangeLog
 
+## [(diff)](https://github.com/haskell-nix/hnix/compare/0.17.0...0.18.0#files_bucket) 0.18.0
+
 ## [(diff)](https://github.com/haskell-nix/hnix/compare/0.16.0...0.17.0#files_bucket) 0.17.0
 
 * Additional
