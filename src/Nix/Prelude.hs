@@ -12,6 +12,7 @@ import           Nix.Utils
 import           Relude                  hiding ( pass
                                                 , force
                                                 , readFile
+                                                , writeFile
                                                 , whenJust
                                                 , whenNothing
                                                 , trace

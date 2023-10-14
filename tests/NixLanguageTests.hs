@@ -162,15 +162,19 @@ assertLangOk :: Options -> Path -> Assertion
 assertLangOk opts fileBaseName =
   do
     actual   <- printNix <$> hnixEvalFile opts (addNixExt fileBaseName)
+    write fileBaseName ".actual" actual
     expected <- read fileBaseName ".exp"
     assertEqual mempty expected (actual <> "\n")
+    remove fileBaseName ".actual"
 
 assertLangOkXml :: Options -> Path -> Assertion
 assertLangOkXml opts fileBaseName =
   do
     actual <- ignoreContext . toXML <$> hnixEvalFile opts (addNixExt fileBaseName)
+    write fileBaseName ".actual.xml" actual
     expected <- read fileBaseName ".exp.xml"
     assertEqual mempty expected actual
+    remove fileBaseName ".actual.xml"
 
 assertEval :: Options -> [Path] -> Assertion
 assertEval _opts files =
@@ -233,3 +237,9 @@ addNixExt path = addExtension path ".nix"
 
 read :: Path -> String -> IO Text
 read path ext = readFile $ addExtension path ext
+
+write :: Path -> String -> Text -> IO ()
+write path ext = writeFile $ addExtension path ext
+
+remove :: Path -> String -> IO ()
+remove path ext = removeFile $ addExtension path ext

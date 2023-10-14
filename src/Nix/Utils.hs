@@ -38,6 +38,8 @@ module Nix.Utils
   , dropExtensions
   , replaceExtension
   , readFile
+  , writeFile
+  , removeFile
 
   , Alg
   , Transform
@@ -59,6 +61,7 @@ module Nix.Utils
 import           Relude                  hiding ( pass
                                                 , force
                                                 , readFile
+                                                , writeFile
                                                 , whenJust
                                                 , whenNothing
                                                 , trace
@@ -84,6 +87,7 @@ import           Lens.Family2.Stock             ( _1
                                                 , _2
                                                 )
 import qualified System.FilePath              as FilePath
+import qualified System.Directory             as Directory
 import Control.Monad.List (foldM)
 
 #if ENABLE_TRACING
@@ -310,8 +314,15 @@ replaceExtension = coerce FilePath.replaceExtension
 
 -- | 'Path's 'FilePath.readFile'.
 readFile :: MonadIO m => Path -> m Text
-readFile = readFileText . coerce
+readFile = fmap decodeUtf8 . readFileBS . coerce
 
+-- | 'Path's 'FilePath.writeFile'.
+writeFile :: MonadIO m => Path -> Text -> m ()
+writeFile p = writeFileBS (coerce p) . encodeUtf8
+
+-- | 'Path's 'Directory.removeFile'.
+removeFile :: MonadIO m => Path -> m ()
+removeFile = liftIO . Directory.removeFile . coerce
 
 -- * Recursion scheme
 

@@ -2,7 +2,7 @@
   description = "A Haskell re-implementation of the Nix expression language";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/ce6aa13369b667ac2542593170993504932eb836";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix = {
       url = "nix/624e38aa43f304fbb78b4779172809add042b513";
       flake = false;
@@ -35,6 +35,24 @@
         '';
       });
 
-    devShell = forAllSystems (system: pkgs: self.defaultPackage.${system}.env);
+    devShell = forAllSystems (system: pkgs:
+      let
+        hp = pkgs.haskellPackages.override {
+          overrides = self: super: with pkgs.haskell.lib; {
+            hnix = super.callCabal2nix "hnix" ./. {};
+            hnix-store-core = super.hnix-store-core_0_6_1_0;
+            hnix-store-remote = super.hnix-store-remote_0_6_0_0;
+          };
+        };
+      in
+      hp.shellFor {
+        packages = ps: [ ps.hnix ];
+        nativeBuildInputs = with pkgs; with hp; [
+          entr
+          cabal-install
+          haskell-language-server
+        ];
+      }
+    );
   };
 }
