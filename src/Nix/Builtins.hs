@@ -88,6 +88,8 @@ import           Text.Regex.TDFA                ( Regex
                                                 , matchOnceText
                                                 , matchAllText
                                                 )
+import System.Nix.Store.Remote (RepairMode(RepairMode_DontRepair), FileIngestionMethod (FileIngestionMethod_FileRecursive))
+import Data.Default (Default(def))
 
 -- This is a big module. There is recursive reuse:
 -- @builtins -> builtinsList -> scopedImport -> withNixContext -> builtins@,
@@ -910,9 +912,10 @@ pathNix arg =
     -- TODO: Fail on extra args
     -- XXX: This is a very common pattern, we could factor it out
     name      <- toText <$> attrGetOr (takeFileName path) (fmap (coerce . toString) . fromStringNoContext) "name" attrs
-    recursive <- attrGetOr True pure "recursive" attrs
+    recursive <- attrGetOr FileIngestionMethod_FileRecursive pure "recursive" attrs
+    storeDir <- attrGetOr def pure "storeDir" attrs
 
-    Right (coerce . toText . coerce @StorePath @String -> s) <- addToStore name (NarFile path) recursive False
+    Right (coerce . toText . coerce @StorePath @String -> s) <- runExceptT $ addToStore storeDir name (NarFile path) recursive RepairMode_DontRepair
     -- TODO: Ensure that s matches sha256 when not empty
     pure $ NVStr $ mkNixStringWithSingletonContext (StringContext DirectPath s) s
  where

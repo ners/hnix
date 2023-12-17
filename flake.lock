@@ -1,5 +1,37 @@
 {
   "nodes": {
+    "dependent-sum-template": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1701877422,
+        "narHash": "sha256-l/TceB8P8dpVJ3ha07u+GeJrLm9KFnGPJJL8/svxGjg=",
+        "owner": "obsidiansystems",
+        "repo": "dependent-sum-template",
+        "rev": "d0e89d81f921829c48333099a992c7bfe40d7f41",
+        "type": "github"
+      },
+      "original": {
+        "owner": "obsidiansystems",
+        "repo": "dependent-sum-template",
+        "type": "github"
+      }
+    },
+    "hnix-store": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1701970933,
+        "narHash": "sha256-u4P5dtC/l5HidneEWu8oRvMHB+whRk83Nyg7L9Q2DZE=",
+        "owner": "haskell-nix",
+        "repo": "hnix-store",
+        "rev": "11da925989793f4af97d22f4554a9d26b79b627c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "haskell-nix",
+        "repo": "hnix-store",
+        "type": "github"
+      }
+    },
     "nix": {
       "flake": false,
       "locked": {
@@ -18,21 +50,24 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1700204040,
-        "narHash": "sha256-xSVcS5HBYnD3LTer7Y2K8ZQCDCXMa3QUD1MzRjHzuhI=",
-        "owner": "NixOS",
+        "lastModified": 1701718080,
+        "narHash": "sha256-6ovz0pG76dE0P170pmmZex1wWcQoeiomUZGggfH9XPs=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "c757e9bd77b16ca2e03c89bf8bc9ecb28e0c06ad",
+        "rev": "2c7f3c0fb7c08a0814627611d9d7d45ab6d75335",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
-        "rev": "c757e9bd77b16ca2e03c89bf8bc9ecb28e0c06ad",
-        "type": "indirect"
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {
       "inputs": {
+        "dependent-sum-template": "dependent-sum-template",
+        "hnix-store": "hnix-store",
         "nix": "nix",
         "nixpkgs": "nixpkgs"
       }
